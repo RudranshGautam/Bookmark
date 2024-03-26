@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookmark Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #addBookmarkForm {
+      margin-bottom: 20px;
+    }
+    .bookmark {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Bookmark Manager</h1>
+
+<form id="addBookmarkForm">
+  <label for="bookmarkName">Website title:</label>
+  <input type="text" id="bookmarkName" required>
+  <br>
+  <label for="bookmarkURL">Website URL:</label>
+  <input type="url" id="bookmarkURL" required>
+  <br>
+  <button type="button" onclick="addBookmark()">Add Bookmark</button>
+</form>
+
+<div id="bookmarksList"></div>
+
+<script>
+  const bookmarksList = document.getElementById('bookmarksList');
+
+  function addBookmark() {
+    const nameInput = document.getElementById('bookmarkName');
+    const urlInput = document.getElementById('bookmarkURL');
+
+    const name = nameInput.value;
+    const url = urlInput.value;
+
+    if (name && url) {
+      const bookmarkElement = document.createElement('div');
+      bookmarkElement.className = 'bookmark';
+      bookmarkElement.innerHTML = '<strong>${name}</strong> > <a href="${url}" target="_blank">${url}</a> <button onclick="editBookmark(this)">Edit</button> <button onclick="deleteBookmark(this)">Delete</button>';
+      
+      bookmarksList.appendChild(bookmarkElement);
+
+      // Clear input fields
+      nameInput.value = '';
+      urlInput.value = '';
+    }
+  }
+
+  function editBookmark(button) {
+    const bookmarkElement = button.parentElement;
+    const name = bookmarkElement.querySelector('strong').innerText;
+    const url = bookmarkElement.querySelector('a').href;
+
+    const newName = prompt('Edit website title:', name);
+    const newURL = prompt('Edit website URL:', url);
+
+    if (newName && newURL) {
+      bookmarkElement.querySelector('strong').innerText = newName;
+      bookmarkElement.querySelector('a').href = newURL;
+    }
+  }
+
+  function deleteBookmark(button) {
+    const bookmarkElement = button.parentElement;
+    bookmarksList.removeChild(bookmarkElement);
+  }
+</script>
+
+</body>
+</html>
